@@ -2,9 +2,11 @@ import pandas as pd
 import os
 
 
-path = './logs'
-df_list = []
-for index, file in enumerate(os.listdir(path)):
+#path = './logs'
+
+def parse_logs(path, csv_file):
+  df_list = []
+  for index, file in enumerate(os.listdir(path)):
     log = os.path.join(path, file)
     df = pd.read_csv(log, delimiter=' ')
     df_list.append(pd.read_csv(
@@ -14,7 +16,8 @@ for index, file in enumerate(os.listdir(path)):
     ))
 
 
-df = pd.concat(df_list)  # concatenate all df
-print(len(df))
+  df = pd.concat(df_list)  # concatenate all df
+  print(len(df))
 
-df.to_csv('./check.csv', index=False)
+  df.to_csv(csv_file, index=False)
+
