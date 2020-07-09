@@ -1,15 +1,12 @@
-# Easy method:
+# Download -> parse -> analyse:
+# IT will download files under /tmp directory
+# files that are downloaded under this directory will be deleted automatically
+
+
 python main.py
 
 
 
-
-
-# Steps to get the report
-
-1. download.py        # Download files for particular date
-2. parse.py           # Create a CSV for the log files downloaded from above steps
-3. create_report.py   # Create Report from the CSV
 
 
 
