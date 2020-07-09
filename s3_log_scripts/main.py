@@ -5,6 +5,8 @@ import shutil
 from download_s3_log_files import download_dir
 from parse import parse_logs
 from create_report import analyse
+from config import Config
+
 
 def clean_dir(directory):
 
@@ -16,7 +18,7 @@ def clean_dir(directory):
 
 
 if __name__ == '__main__':
-
+  config = Config()
   prefix = '2020-06-14'
   bucket = 'ez-living-logs'
   local = '/tmp/logs'
@@ -24,7 +26,8 @@ if __name__ == '__main__':
   s3_client = boto3.client('s3')
 
   # Download
-  download_dir(prefix, local, bucket, s3_client)
+  download_dir(config, s3_client)
+  #download_dir(prefix, local, bucket, s3_client)
 
   csv_path = '/tmp/csvs'
   clean_dir(csv_path)
@@ -35,9 +38,10 @@ if __name__ == '__main__':
 
   report_path = '/tmp/reports'
   clean_dir(report_path)
-  report = os.path.join(report_path, 'report.csv')
+
   
   # Analyse
+  report = os.path.join(report_path, 'report.csv')
   analyse(parsed_file, report)
 
 

@@ -3,7 +3,8 @@ import os
 
 #s3_client = boto3.client('s3')
 
-def download_dir(prefix, local, bucket, client):
+#def download_dir(prefix, local, bucket, client):
+def download_dir(config, client):
     """
     params:
     - prefix: pattern to match in s3
@@ -15,8 +16,8 @@ def download_dir(prefix, local, bucket, client):
     dirs = []
     next_token = ''
     base_kwargs = {
-        'Bucket':bucket,
-        'Prefix':prefix,
+        'Bucket': config.bucket,
+        'Prefix': config.prefix,
     }
     while next_token is not None:
         kwargs = base_kwargs.copy()
@@ -32,14 +33,14 @@ def download_dir(prefix, local, bucket, client):
                 dirs.append(k)
         next_token = results.get('NextContinuationToken')
     for d in dirs:
-        dest_pathname = os.path.join(local, d)
+        dest_pathname = os.path.join(config.local, d)
         if not os.path.exists(os.path.dirname(dest_pathname)):
             os.makedirs(os.path.dirname(dest_pathname))
     for k in keys:
-        dest_pathname = os.path.join(local, k)
+        dest_pathname = os.path.join(config.local, k)
         if not os.path.exists(os.path.dirname(dest_pathname)):
             os.makedirs(os.path.dirname(dest_pathname))
-        client.download_file(bucket, k, dest_pathname)
+        client.download_file(config.bucket, k, dest_pathname)
 
 
 """
