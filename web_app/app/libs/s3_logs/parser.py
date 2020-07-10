@@ -8,6 +8,14 @@ class Parser:
     self.names = config.names
 
 
+  def clean_logs(self, df):
+    df = df[~df.requeste_arn.str.contains("arn:aws:iam")]
+    df = df[df.operation.str.contains("REST.GET.OBJECT")]
+    df = df[~df.request_uri.str.contains("favicon")]
+    df = df[~df.request_uri.str.contains("robots")]
+    df = df[~df.request_uri.str.contains("wp-login.php")]
+    return df
+
   def parse(self):
     df_list = []
     for index, file in enumerate(os.listdir(self.logs_path)):
@@ -21,6 +29,5 @@ class Parser:
 
 
     df = pd.concat(df_list)  # concatenate all df
-    print(len(df))
- 
+    df = self.clean_logs(df)
     df.to_csv(self.log_file, index=False)
