@@ -34,3 +34,4 @@ class Config:
       os.makedirs(directory)
     else:
       os.makedirs(directory)
+

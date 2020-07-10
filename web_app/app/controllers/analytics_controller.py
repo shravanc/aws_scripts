@@ -5,7 +5,7 @@ from app.helpers.analytics import Analytics
 
 def index():
   if request.method == "POST":
-    config = Config(download=False)
+    config = Config(download=True)
     analytics = Analytics(config, request)
     config = analytics.generate_report()
 
