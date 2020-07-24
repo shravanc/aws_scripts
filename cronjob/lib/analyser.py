@@ -51,8 +51,8 @@ class Analyser:
 
         final.to_csv(self.report_file)
 
-        with open('./report.txt', mode='w+') as fp:
-          fp.write(f"Valid_Count: {self.valid_count}\n")
-          fp.write(f"Invalid_Count: {self.invalid_count}\n")
-          fp.write(f"Hiphen Count: {self.hifen_count}\n")
+        #with open('./report.txt', mode='w+') as fp:
+        #  fp.write(f"Valid_Count: {self.valid_count}\n")
+        #  fp.write(f"Invalid_Count: {self.invalid_count}\n")
+        #  fp.write(f"Hiphen Count: {self.hifen_count}\n")
 
