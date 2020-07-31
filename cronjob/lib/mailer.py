@@ -12,11 +12,12 @@ class Mailer:
         self.msg = MIMEMultipart()
         self.msg['From'] = self.fromaddr
         self.msg['To'] = self.toaddr
-        self.msg['Subject'] = 'Testing Attachment'
+        self.msg['Subject'] = 'EZ Living Report'
         self.body = 'Sample Body'
 
-        self.filename = config.log_file.split('/')[-1]
-        self.filepath = config.log_file
+        self.filename = config.report_file.split('/')[-1]
+        self.filepath = config.report_file
+        self.emails = config.emails
 
         attachment = open(self.filepath, 'rb')
 
@@ -37,6 +38,11 @@ class Mailer:
 
 
     def deliver(self):
-        self.s.sendmail(self.fromaddr, self.toaddr, self.text)
-        self.s.quit()
+
+        for email in self.emails:
+            self.s.sendmail(self.fromaddr, email, self.text)
+
+
+        #self.s.sendmail(self.fromaddr, self.toaddr, self.text)
+        #self.s.quit()
 

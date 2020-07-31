@@ -5,7 +5,7 @@ from datetime import datetime
 
 
 class Config:
-    def __init__(self, download=False, bucket='noplacelike-logs'):
+    def __init__(self, download=False, bucket='ez-living-logs'):
         self.download = download
         self.bucket = bucket
         self.prefix = datetime.today().strftime('%Y-%m-%d')
@@ -30,7 +30,13 @@ class Config:
 
         self.fromaddr = 'no.place.like.co@gmail.com'
         self.toaddr = 'shravan007.c@gmail.com'
+        self.emails = ['shravan007.c@gmail.com', 'allen@noplacelike.co']
         self.password = 'N0Pl@ceL!ke'
+
+        self.headers = {"Authorization": "Bearer key8FIuGfc4goXqdS", "Content-Type": "application/json"}
+        self.url = 'https://api.airtable.com/v0/appz5xeBBomfgf2qU/EZ%20Living%20Interiors'
+
+        self.products = os.path.join(os.getcwd(), 'products.csv')
 
 
     def clean_dir(self, directory):
