@@ -34,9 +34,9 @@ class Config:
         self.password = 'N0Pl@ceL!ke'
 
         self.headers = {"Authorization": "Bearer key8FIuGfc4goXqdS", "Content-Type": "application/json"}
-        self.url = 'https://api.airtable.com/v0/appz5xeBBomfgf2qU/EZ%20Living%20Interiors'
+        self.url = 'https://api.airtable.com/v0/appz5xeBBomfgf2qU/Usage'
 
-        self.products = os.path.join(os.getcwd(), 'products.csv')
+        self.products_file = os.path.join(os.getcwd(), 'products.csv')
 
 
     def clean_dir(self, directory):
