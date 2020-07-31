@@ -10,6 +10,7 @@ class Airtable:
         self.rows = pd.read_csv(config.report_file)
         self.products = pd.read_csv(config.products_file)
         self.date = config.prefix
+        self.customer = config.bucket
 
 
     def update(self):
@@ -24,7 +25,7 @@ class Airtable:
 
 
     def _construct_data(self, row):
-        return {"fields": { "Customer": 'Ez-Living',
+        return {"fields": { "Customer": self.customer,
                 "Product": row['key'].split('/')[-1],
                 "Views": row['hits'],
                 "Link": row['referee'],

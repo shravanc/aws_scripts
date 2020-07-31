@@ -1,14 +1,14 @@
 import boto3
 import os
 import shutil
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 class Config:
     def __init__(self, download=False, bucket='ez-living-logs'):
         self.download = download
         self.bucket = bucket
-        self.prefix = datetime.today().strftime('%Y-%m-%d')
+        self.prefix = (datetime.today() - timedelta(1)).strftime('%Y-%m-%d')
         self.client = boto3.client('s3')
 
         self.local_path = '/tmp/logs'
