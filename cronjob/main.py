@@ -10,7 +10,8 @@ BUCKETS = ['ez-living-logs', 'meadows-and-byrne-logs', 'swyft-logs']
 if __name__ == "__main__":
 
     for bucket in BUCKETS:
-        config = Config(download=True, bucket)
+        print("----Bucket----", bucket)
+        config = Config(download=False, bucket=bucket)
         analytics = Analytics(config)
         analytics.generate_report()
 
@@ -21,4 +22,5 @@ if __name__ == "__main__":
 
         airtable = Airtable(config)
         airtable.update()
+        print("----END----")
 

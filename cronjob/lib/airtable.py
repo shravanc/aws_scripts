@@ -18,14 +18,16 @@ class Airtable:
             data = self._construct_data(row)
             price = self._get_product_price(data['fields']['Product'])
             if math.isnan(price):
-                data['fields']['Product Price'] = 0.0
+                data['fields']['Price'] = 0.0
             else:
-                data['fields']['Product Price'] = price
+                data['fields']['Price'] = price
             self.response = requests.post(self.url, data=json.dumps(data), headers=self.headers)
+            #print("----code---->", self.response.status_code)
+            print("----code---->", self.response.text)
 
 
     def _construct_data(self, row):
-        return {"fields": { "Customer": self.customer,
+        return {"fields": { "Client": self.customer,
                 "Product": row['key'].split('/')[-1],
                 "Views": row['hits'],
                 "Link": row['referee'],
@@ -34,4 +36,7 @@ class Airtable:
 
     def _get_product_price(self, product):
         row = self.products.loc[self.products['value'] == product]
-        return row.iloc[0]['Price']
+        try:
+            return row.iloc[0]['Price']
+        except:
+            return 0.0
