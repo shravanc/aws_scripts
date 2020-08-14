@@ -4,8 +4,8 @@ from lib.mailer import Mailer
 from lib.airtable import Airtable
 
 
-BUCKETS = ['ez-living-logs', 'meadows-and-byrne-logs', 'swyft-logs']
-
+# BUCKETS = ['ez-living-logs', 'meadows-and-byrne-logs', 'swyft-logs']
+BUCKETS = ['ez-living-logs']
 
 if __name__ == "__main__":
 
@@ -22,5 +22,8 @@ if __name__ == "__main__":
 
         airtable = Airtable(config)
         airtable.update()
+        #airtable.create_products()
+        #airtable.fetch_product('recu4alQgcx51H5JH')
+        #airtable.update_product_hit_count('recu4alQgcx51H5JH')
         print("----END----")
 

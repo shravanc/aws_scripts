@@ -32,10 +32,10 @@ class Analyser:
                 self.invalid_count += 1
                 continue
 
-            key, referee = row[ ['key', 'referrer'] ]
-            if referee == '-':
+            key, referrer = row[ ['key', 'referrer'] ]
+            if referrer == '-':
                 self.hifen_count += 1
-            data.append([key, referee, 1])
+            data.append([key, referrer, 1])
             self.valid_count += 1
 
         return data
@@ -43,10 +43,10 @@ class Analyser:
     def analyse(self):
         df = pd.read_csv(self.log_file)
         data = self.process(df)
-        new_df = pd.DataFrame(data, columns=['key', 'referee', 'hits'])
+        new_df = pd.DataFrame(data, columns=['key', 'referrer', 'hits'])
 
         final = new_df.groupby(
-            ['key', 'referee']
+            ['key', 'referrer']
         ).sum()
 
         final.to_csv(self.report_file)

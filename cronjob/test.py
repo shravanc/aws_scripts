@@ -1,14 +1,5 @@
-import pandas as pd
-
-df = pd.read_csv("./products.csv")
-print(df.head())
-for i, row in df.iterrows():
-    if str(row['value']) != 'nan':
-        text = row['value'].split('/')[-1].replace(".usdz'", '.usdz').replace(".glb'", '.glb')
-        #df.iloc[i]['value'] = text
-        df.at[i, 'value'] = text
+d = {'id': 'recUmPYQMrV3q7x3v', 'fields': {'Name': 'RugPowder.usdz', 'Price': 319, 'Client': ['recR3tJdG0B87xeI1'], 'Hits': 1}, 'createdTime': '2020-08-13T14:55:51.000Z'}
+del d['createdTime']
+print(d)
 
 
-
-
-df.to_csv('./test.csv', index=False)

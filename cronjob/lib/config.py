@@ -36,7 +36,9 @@ class Config:
         self.headers = {"Authorization": "Bearer key8FIuGfc4goXqdS", "Content-Type": "application/json"}
         self.url = 'https://api.airtable.com/v0/appz5xeBBomfgf2qU/Usage'
 
-        self.products_file = os.path.join(os.getcwd(), 'products.csv')
+        #self.products_file = os.path.join(os.getcwd(), 'products.csv')
+        self.products_file = os.path.join(os.getcwd(), 'final.csv')
+        self.date_format = "[%d/%b/%Y:%H:%M:%S"
 
 
     def clean_dir(self, directory):
