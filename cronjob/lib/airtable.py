@@ -20,10 +20,14 @@ class Airtable:
 
     def update(self):
         for i, row in self.rows.iterrows():
+            print("-----------------------------START-----------------------------------------------")
             data = self._construct_data(row)
-            print("POST---USAGE--->", data)
+            #print("POST---USAGE--->", data)
             self.response = requests.post(self.url, data=json.dumps(data), headers=self.headers)
-            print("USAGE_RESPONSE---->", self.response.text)
+            #print("USAGE_RESPONSE---->", self.response.text)
+            if i > 50:
+                break
+            print("-----------------------------END-------------------------------------------------\n")
 
 
     def _construct_data(self, row):
@@ -35,12 +39,12 @@ class Airtable:
             Platform = 'Web'
 
         id = self._get_product_id(name)
-        print(f"1--name-->{name},--->id--->{id}")
+        #print(f"1--name-->{name},--->id--->{id}")
         if len(id) > 1:
             resp = self.update_product_hit_count(id)
 
         return {"fields": { "Name": name, #row['key'].split('/')[-1],
-                           "Product": [self._get_product_id(name)], # ['recv7M2U0t1c1VQLO'], #name,
+                           "Product": [id], # ['recv7M2U0t1c1VQLO'], #name,
                            "Views": 1,
                            "Link": row['referrer'],
                            "Date and Time": self._get_time(row),
@@ -50,6 +54,7 @@ class Airtable:
 
     def _get_product_id(self, product):
         row = self.products.loc[self.products['value'] == product]
+        print(row)
         if len(row) >0:
             return row.iloc[0]['id']
         else:
@@ -86,17 +91,17 @@ class Airtable:
 
         #data = {"records": [data]}
         resp = self.update_product(data)
-        print("UPDATE_RESPONSE----->", resp.text)
+        #print("UPDATE_RESPONSE----->", resp.text)
         return resp
 
 
     # Fetch Product by id
     def fetch_product(self, id):
         url = f"https://api.airtable.com/v0/appz5xeBBomfgf2qU/Products/{id}"
-        print("2---->URL--->", url)
+        #print("2---->URL--->", url)
         resp = requests.get(url, headers=self.headers)
         data = json.loads(resp.text)
-        print('3--->FETCH_data--->', data)
+        #print('3--->FETCH_data--->', data)
         del data['createdTime']
         return data
 
@@ -116,7 +121,7 @@ class Airtable:
         url = 'https://api.airtable.com/v0/appz5xeBBomfgf2qU/Products'
         #resp = requests.patch(url, data=json.dumps(data), headers=self.headers)
         patch_data = {'records': [self.get_patch_data(data)] }
-        print("===PATCH===", patch_data)
+        #print("===PATCH===", patch_data)
         resp = requests.patch(url, json=patch_data
                               , headers=self.headers)
         return resp
