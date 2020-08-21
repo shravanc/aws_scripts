@@ -24,9 +24,9 @@ class Parser:
         # Filter to get only glb, usdz
         # df = df[~df.request_uri.str.contains(".css", case=False)]
         # df = df[~df.request_uri.str.contains(".js", case=False)]
-        # df = df[~df.request_uri.str.contains(".html", case=False)]
+        df = df[df.request_uri.str.contains(".html", case=False)]
         # df = df[df.request_uri.str.contains(".usdz", case=False)]
-        df = df[df.request_uri.str.contains(".glb", case=False)]
+        #df = df[df.request_uri.str.contains(".glb", case=False)]
         return df
 
     def parse(self):

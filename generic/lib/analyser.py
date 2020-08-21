@@ -1,6 +1,4 @@
 import pandas as pd
-
-
 class Analyser:
 
     def __init__(self, config):
@@ -12,7 +10,7 @@ class Analyser:
 
     def valid(self, row):
         if 'arn:aws:iam' in row['requeste_arn']:
-            return False
+          return False
 
         if row['http_status'] != 200:
             return False
@@ -25,6 +23,7 @@ class Analyser:
 
         return True
 
+
     def process(self, df):
         data = []
         self.hifen_count = 0
@@ -33,10 +32,10 @@ class Analyser:
                 self.invalid_count += 1
                 continue
 
-            key, referee = row[['key', 'referrer']]
-            if referee == '-':
+            key, referrer = row[ ['key', 'referrer'] ]
+            if referrer == '-':
                 self.hifen_count += 1
-            data.append([key, referee, 1])
+            data.append([key, referrer, 1])
             self.valid_count += 1
 
         return data
@@ -44,16 +43,16 @@ class Analyser:
     def analyse(self):
         df = pd.read_csv(self.log_file)
         data = self.process(df)
-        new_df = pd.DataFrame(data, columns=['key', 'referee', 'hits'])
+        new_df = pd.DataFrame(data, columns=['key', 'referrer', 'hits'])
 
         final = new_df.groupby(
-            ['key']
-            #['key', 'referee']
+            ['key', 'referrer']
         ).sum()
 
         final.to_csv(self.report_file)
 
-        with open('./report.txt', mode='w+') as fp:
-            fp.write(f"Valid_Count: {self.valid_count}\n")
-            fp.write(f"Invalid_Count: {self.invalid_count}\n")
-            fp.write(f"Hiphen Count: {self.hifen_count}\n")
+        #with open('./report.txt', mode='w+') as fp:
+        #  fp.write(f"Valid_Count: {self.valid_count}\n")
+        #  fp.write(f"Invalid_Count: {self.invalid_count}\n")
+        #  fp.write(f"Hiphen Count: {self.hifen_count}\n")
+

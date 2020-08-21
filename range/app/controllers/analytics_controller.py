@@ -6,13 +6,13 @@ from app.helpers.analytics import Analytics
 
 def index():
     if request.method == "POST":
-        config = Config(download=False)
+        config = Config(download=True)
 
         form = {"prefix": request.form['prefix'], "bucket": request.form['bucket']}
+        #base = "2020-06-"
         base = "2020-06-"
-        base = "2020-07-"
         arr = []
-        for i in range(1,16):
+        for i in range(1,30):
             form['prefix'] = f"{base}{i:02d}"
             analytics = Analytics(config, form)
             analytics.download_logs()
