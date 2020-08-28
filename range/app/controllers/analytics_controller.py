@@ -10,9 +10,9 @@ def index():
 
         form = {"prefix": request.form['prefix'], "bucket": request.form['bucket']}
         #base = "2020-06-"
-        base = "2020-06-"
+        base = "2020-08-"
         arr = []
-        for i in range(1,30):
+        for i in range(1,28):
             form['prefix'] = f"{base}{i:02d}"
             analytics = Analytics(config, form)
             analytics.download_logs()

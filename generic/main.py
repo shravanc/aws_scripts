@@ -1,30 +1,31 @@
-from lib.config import Config
+from config.conf import Config
 from lib.analytics import Analytics
 from lib.mailer import Mailer
 from lib.airtable import Airtable
 
 
+
+from tables.product import Product
+from tables.usage import Usage
+
 # BUCKETS = ['ez-living-logs', 'meadows-and-byrne-logs', 'swyft-logs']
-BUCKETS = ['ez-living-logs']
+# BUCKETS = ['ez-living-logs']
+BUCKETS = ['swyft-logs']
 
 if __name__ == "__main__":
 
     for bucket in BUCKETS:
-        print("----Bucket----", bucket)
         config = Config(download=False, bucket=bucket)
-
         analytics = Analytics(config)
         analytics.generate_report()
 
-        #print("CReport Generated---")
-        #mailer = Mailer(config)
-        #mailer.deliver()
-        #print("Report Sent---")
+        # product = Product(config)
+        # filename = '/home/shravan/aws_scripts/generic/SwyftProduct.csv'
+        # product.create(filename)
 
-        airtable = Airtable(config)
-        airtable.update()
-        #airtable.create_products()
-        #airtable.fetch_product('recu4alQgcx51H5JH')
-        #airtable.update_product_hit_count('recu4alQgcx51H5JH')
-        print("----END----")
+        print("---starting---")
+        usage = Usage(config)
+        usage.update()
+
+
 

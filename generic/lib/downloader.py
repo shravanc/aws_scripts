@@ -6,7 +6,7 @@ class Downloader:
         self.bucket = config.bucket
         self.prefix = config.prefix
         self.local  = config.local_path
-        self.client = config.client
+        self.client = config.s3_client
 
 
     def download(self):

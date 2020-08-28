@@ -9,7 +9,8 @@ class Parser:
         self.logs_path = config.local_path
         self.names = config.names
         #self.customer = config.bucket
-        self.customer = config.customer
+        self.customer = config.client
+        #self.customer = config.customer
 
     def clean_logs(self, df):
         df = df[~df.requeste_arn.str.contains("arn:aws:iam")]
