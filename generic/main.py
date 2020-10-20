@@ -15,7 +15,7 @@ BUCKETS = ['swyft-logs']
 if __name__ == "__main__":
 
     for bucket in BUCKETS:
-        config = Config(download=False, bucket=bucket)
+        config = Config(download=True, bucket=bucket)
         analytics = Analytics(config)
         analytics.generate_report()
 

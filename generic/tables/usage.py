@@ -4,6 +4,7 @@ import pandas as pd
 import math
 import datetime
 from tables.product import Product
+from device_detector import DeviceDetector
 
 
 
@@ -45,6 +46,8 @@ class Usage:
 
             resp = self.product.update_hit_count(product_id)
             resp = self._create(row, product_id)
+
+            break
 
 
 
@@ -121,6 +124,8 @@ class Usage:
         fields['Link'] = row['referrer']
         fields['Date and Time'] = self._format_time(row)
         fields['Platform'] = self._platform(row['key'])
+        device = DeviceDetector(row['user_agent']).parse()
+        fields['Device'] = device.os_name()
 
         return {"fields": fields}
 

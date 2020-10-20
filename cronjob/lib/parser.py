@@ -21,6 +21,7 @@ class Parser:
         # df = df[~df.request_uri.str.contains(".js", case=False)]
         if self.customer == 'swyft-logs':
             df = df[~df.request_uri.str.contains(".html", case=False)]
+            df = df[~df.request_uri.str.contains(".html", case=False)]
         #df = df[df.request_uri.str.contains(".usdz", case=False)]
         return df
 

@@ -4,11 +4,9 @@ import pandas as pd
 import math
 import datetime
 import json
-import re
 
 class Airtable:
     def __init__(self, config):
-        self.config = config
         self.data = {"fields": {"Customer": "testing through script"}}
         self.headers = config.headers
         self.url = config.url
@@ -22,83 +20,16 @@ class Airtable:
 
     def webflow_data(self):
 
-        self.all_products = self.fetch_products()
-        self.all_products = self.all_products['records']
-        data = self.fetch_analytics()
-        #print(self.all_products)
-
-        # Total Revenue
-        revenue = self.get_total_revenue()
-        conversion_rate = 0.003
-        todays_revenue = revenue * conversion_rate
-
-        # Totla views
-        todays_view_count = len(self.rows)
-
-        # Analytics per Month
-        if self.config.prefix.split('-')[-1] == '01':
-            data['records'][0]['fields']['Revenue per Month'] = 0
-            data['records'][0]['fields']['Views per Month'] = 0
-
-
-
-
-        data['records'][0]['fields']['Total Views'] += todays_view_count
-        data['records'][0]['fields']['Total Revenue'] += todays_revenue
-        data['records'][0]['fields']['Revenue per Month'] += todays_revenue
-        data['records'][0]['fields']['Views per Month'] += todays_view_count
-        self._update_analytics(data)
-        #print("-------------AM Done----------------", self.total_views)
-
-
-
-    def get_total_revenue(self):
-
-        revenue = 0
         for i, row in self.rows.iterrows():
-            print(row['referrer'])
-            try:
-                prod, category = self.get_product_and_category(row['referrer'])
-                product = self.get_product_details(prod, category)
-                revenue += product['fields']['Price']
-            except:
-                print("******")
-            break
+            print(row)
+            if i == 2:
+                break
 
-        return revenue
-
-    def get_product_and_category(self, url):
-
-        arr = url.split("/")
-        product = arr[-1].split("?")[0].split(".html")[0]
-        category = arr[-2]
-
-        return product, category
-
-
-    def get_product_details(self, prod, category):
-
-        for product in self.all_products:
-            title = product['fields']['Name']
-            pr_cat = product['fields']['category'][0]
-            #print(f"{title}----{pr_cat}")
-            if category == pr_cat:
-                print(f"------->{prod}---->{title}")
-                if prod.lower() in title.lower():
-                    print("****Found****", product['fields']['Name'])
-                    return product
-
-
-
-
-
-
-
-
-
-
-
-
+        todays_view_count = len(self.rows)
+        data = self.fetch_analytics()
+        self.total_views = data['records'][0]['fields']['Total Views'] + todays_view_count
+        self._update_analytics(data)
+        print("-------------AM Done----------------", self.total_views)
 
     def update(self):
         for i, row in self.rows.iterrows():
@@ -187,11 +118,6 @@ class Airtable:
         return json.loads(resp.text)
 
 
-    def fetch_products(self):
-        url = "https://api.airtable.com/v0/appz5xeBBomfgf2qU/Products?maxRecords=31&view=Grid%20view"
-        resp = requests.get(url, headers=self.headers)
-        return json.loads(resp.text)
-
     # Fetch Product by id
     def fetch_product(self, id):
         url = f"https://api.airtable.com/v0/appz5xeBBomfgf2qU/Products/{id}"
@@ -203,10 +129,7 @@ class Airtable:
         patch_data = {}
         patch_data['id'] = data['id']
 
-        fields = {"Total Views": data['fields']['Total Views'],
-                  "Total Revenue": data['fields']['Total Revenue'],
-                  "Revenue per Month": data['fields']['Revenue per Month'],
-                  "Views per Month": data['fields']['Views per Month']}
+        fields = {"Total Views": data['fields']['Total Views']+self.total_views}
 
         patch_data['fields'] = fields
 
