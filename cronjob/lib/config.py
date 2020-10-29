@@ -34,7 +34,8 @@ class Config:
         self.password = 'N0Pl@ceL!ke'
 
         self.headers = {"Authorization": "Bearer key8FIuGfc4goXqdS", "Content-Type": "application/json"}
-        self.url = 'https://api.airtable.com/v0/appz5xeBBomfgf2qU/Usage'
+        #self.url = 'https://api.airtable.com/v0/appz5xeBBomfgf2qU/Usage'
+        self.url = 'https://api.airtable.com/v0/apptewgHCx19BU2Gh/Usage'
 
         #self.products_file = os.path.join(os.getcwd(), 'products.csv')
         self.products_file = os.path.join(os.getcwd(), 'final.csv')

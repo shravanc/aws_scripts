@@ -13,10 +13,19 @@ if __name__ == "__main__":
 
     for bucket in BUCKETS:
         print("----Bucket----", bucket)
-        config = Config(download=False, bucket=bucket)
+        config = Config(download=True, bucket=bucket)
         analytics = Analytics(config)
-        #ianalytics.generate_report()
-        analytics.download_logs()
+        base = "2020-10-"
+        arr = []
+        for i in range(1,29):
+            try:
+                config.prefix = f"{base}{i:02d}"
+                print(config.prefix)
+                analytics = Analytics(config)
+                analytics.download_logs()
+            except:
+                pass
+        analytics.generate_report()
 
         #print("CReport Generated---")
         #mailer = Mailer(config)

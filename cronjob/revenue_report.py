@@ -15,15 +15,25 @@ if __name__ == "__main__":
         print("----Bucket----", bucket)
         config = Config(download=False, bucket=bucket)
         analytics = Analytics(config)
-        #ianalytics.generate_report()
-        analytics.download_logs()
+        base = "2020-10-"
+        arr = []
+        for i in range(1,2):
+            try:
+                config.prefix = f"{base}{i:02d}"
+                print(config.prefix)
+                #analytics = Analytics(config)
+                #analytics.download_logs()
+            except:
+                pass
+        analytics.generate_report()
 
         #print("CReport Generated---")
         #mailer = Mailer(config)
         #mailer.deliver()
         #print("Report Sent---")
 
-        #airtable = Airtable(config)
+        airtable = Airtable(config)
+        airtable.swyft_report()
         #airtable.webflow_data()
         #airtable.update()
         #airtable.create_products()

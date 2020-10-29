@@ -20,10 +20,80 @@ class Airtable:
         self.date_format = config.date_format
         self.total_views = 0
 
-    def webflow_data(self):
 
+    def swyft_report(self):
         self.all_products = self.fetch_products()
         self.all_products = self.all_products['records']
+        #print(f"alll products ----> {self.all_products[0]}")
+
+        usage = self._get_usage_details()
+        self._update_revenue_report(usage)
+
+    def _update_revenue_report(self, usage):
+        print("Revenur report")
+        todays_report = {
+            'Client': ['recD5eJUCQBUdsqER'],
+            'Number of Views Total': 0,
+            'Product': [],
+            'Date and Time': '2020-08-27T00:00:00',
+        }
+
+        for pr_name, data in usage.items():
+            print("---data---->", data)
+            todays_report['Number of Views Total'] += data['Views']
+            todays_report['Product'].append(data['Products'])
+
+
+        #print(todays_report)
+        post_data = {
+            "records": [{
+                "fields": todays_report
+            }]
+        }
+        url = 'https://api.airtable.com/v0/apptewgHCx19BU2Gh/Usage'
+        print(post_data)
+        resp = self._post_me(url, post_data)
+        print(json.loads(resp.text))
+
+    def _post_me(self, url, data):
+        return requests.post(url, data=json.dumps(data), headers=self.headers)
+
+
+    def _get_usage_details(self):
+        products = []
+        usage = {}
+        for i, row in self.rows.iterrows():
+            prod, category = self.get_product_and_category(row['referrer'])
+            product = self.get_product_details(prod, category)
+            pr_name = product['fields']['Name']
+
+            update = False
+            if pr_name not in usage:
+                update = True
+                data = {}
+                data['Products'] = product['id']
+            else:
+                data = usage[pr_name]
+
+
+            if 'Views' in data:
+                data['Views'] += 1
+            else:
+                data['Views'] = 1
+
+
+
+
+            if update:
+                usage[pr_name] = data
+        #print("Usage---->", usage)
+
+
+        return usage
+
+    def webflow_data(self):
+
+
         data = self.fetch_analytics()
         #print(self.all_products)
 
@@ -79,13 +149,14 @@ class Airtable:
     def get_product_details(self, prod, category):
 
         for product in self.all_products:
+            print("****", product)
             title = product['fields']['Name']
             pr_cat = product['fields']['category'][0]
             #print(f"{title}----{pr_cat}")
             if category == pr_cat:
-                print(f"------->{prod}---->{title}")
+                #print(f"------->{prod}---->{title}")
                 if prod.lower() in title.lower():
-                    print("****Found****", product['fields']['Name'])
+                    #print("****Found****", product['fields']['Name'])
                     return product
 
 
@@ -188,7 +259,8 @@ class Airtable:
 
 
     def fetch_products(self):
-        url = "https://api.airtable.com/v0/appz5xeBBomfgf2qU/Products?maxRecords=31&view=Grid%20view"
+        #url = "https://api.airtable.com/v0/appz5xeBBomfgf2qU/Products?maxRecords=31&view=Grid%20view"
+        url = "https://api.airtable.com/v0/apptewgHCx19BU2Gh/Products?maxRecords=30&view=Grid%20view"
         resp = requests.get(url, headers=self.headers)
         return json.loads(resp.text)
 

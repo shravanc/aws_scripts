@@ -17,7 +17,7 @@ class Downloader:
             'Bucket': self.bucket,
             'Prefix': self.prefix,
         }
-
+        print(base_kwargs)
 
         while next_token is not None:
             kwargs = base_kwargs.copy()

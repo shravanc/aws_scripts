@@ -13,9 +13,15 @@ class Analytics:
         self.parser = Parser(config)
         self.analyser = Analyser(config)
 
-    def generate_report(self):
+
+    def download_logs(self):
+        print("here")
         if self.config.download:
             self.downloader.download()
+
+    def generate_report(self):
+        #if self.config.download:
+        #    self.downloader.download()
         self.parser.parse()
         self.analyser.analyse()
         return self.config

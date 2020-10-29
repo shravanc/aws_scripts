@@ -10,7 +10,7 @@ def index():
 
         form = {"prefix": request.form['prefix'], "bucket": request.form['bucket']}
         #base = "2020-06-"
-        base = "2020-08-"
+        base = "2020-10-"
         arr = []
         for i in range(1,28):
             form['prefix'] = f"{base}{i:02d}"
